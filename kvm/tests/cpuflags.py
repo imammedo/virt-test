@@ -162,7 +162,7 @@ def run_cpuflags(test, params, env):
         cmd = qemu_binary + " -cpu ?"
         output = utils.run(cmd).stdout
 
-        cpu_re = re.compile("\w+\s+\[?(\w+)\]?")
+        cpu_re = re.compile("\w+\s+\[?([a-zA-Z0-9_-]+)\]?")
         return cpu_re.findall(output)
 
     def check_cpuflags(cpumodel, vm_session):
