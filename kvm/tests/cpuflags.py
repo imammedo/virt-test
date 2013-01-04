@@ -122,7 +122,7 @@ def run_cpuflags(test, params, env):
         return set(map(utils_misc.Flag, flags))
 
     def get_all_qemu_flags():
-        cmd = qemu_binary + " -cpu ?cpuid"
+        cmd = qemu_binary + " -cpu ?"
         output = utils.run(cmd).stdout
 
         flags_re = re.compile(r".*\n.*f_edx:(.*)\n.*f_ecx:(.*)\n.*extf_edx:"
