@@ -101,25 +101,8 @@ def run_cpuflags(test, params, env):
         return set(map(utils_misc.Flag, flags))
 
     def get_guest_host_cpuflags(cpumodel):
-        """
-        Get cpu flags correspond with cpumodel parameters.
-
-        @param cpumodel: Cpumodel parameter sended to <qemu-kvm-cmd>.
-        @return: [corespond flags]
-        """
-        cmd = qemu_binary + " -cpu ?dump"
-        output = utils.run(cmd).stdout
-        re.escape(cpumodel)
-        pattern = (".+%s.*\n.*\n +feature_edx .+ \((.*)\)\n +feature_"
-                   "ecx .+ \((.*)\)\n +extfeature_edx .+ \((.*)\)\n +"
-                   "extfeature_ecx .+ \((.*)\)\n" % (cpumodel))
-        flags = []
-        model = re.search(pattern, output)
-        if model == None:
-            raise error.TestFail("Cannot find %s cpu model." % (cpumodel))
-        for flag_group in model.groups():
-            flags += flag_group.split()
-        return set(map(utils_misc.Flag, flags))
+	# qemu -cpu doesn't support ?dump anymore
+        return get_all_qemu_flags()
 
     def get_all_qemu_flags():
         cmd = qemu_binary + " -cpu ?"
