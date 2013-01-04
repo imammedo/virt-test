@@ -3349,10 +3349,6 @@ variants:
                 variants:
                     - qemu_cpu_model:
                         test_type = "test_qemu_cpu_model"
-                    - qemu_cpu_dump:
-                        test_type = "test_qemu_dump"
-                    - qemu_cpu_cpuid:
-                        test_type = "test_qemu_cpuid"
             - boot_guest:
                 variants:
                     - qemu_boot_cpu_model:

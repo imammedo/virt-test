@@ -347,32 +347,6 @@ def run_cpuflags(test, params, env):
                                      "'%s' of command \n%s" %
                                      (missing, cmd, result.stdout))
 
-    # 2) <qemu-kvm-cmd> -cpu ?dump
-    class test_qemu_dump(MiniSubtest):
-        def test(self):
-            cpu_models = params.get("cpu_models", "core2duo").split()
-            cmd = qemu_binary + " -cpu ?dump"
-            result = utils.run(cmd)
-            cpu_models = map(separe_cpu_model, cpu_models)
-            missing = []
-            for cpu_model in cpu_models:
-                if not cpu_model in result.stdout:
-                    missing.append(cpu_model)
-            if missing:
-                raise error.TestFail("CPU models %s are not in output "
-                                     "'%s' of command \n%s" %
-                                     (missing, cmd, result.stdout))
-
-    # 3) <qemu-kvm-cmd> -cpu ?cpuid
-    class test_qemu_cpuid(MiniSubtest):
-        def test(self):
-            cmd = qemu_binary + " -cpu ?cpuid"
-            result = utils.run(cmd)
-            if result.stdout is "":
-                raise error.TestFail("There aren't any cpu Flag in output"
-                                     " '%s' of command \n%s" %
-                                     (cmd, result.stdout))
-
     # 1) boot with cpu_model
     class test_boot_cpu_model(Test_temp):
         def test(self):
