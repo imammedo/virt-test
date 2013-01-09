@@ -78,6 +78,8 @@ def run_cpuid_regression(test, params, env):
         params_b["kernel"] = os.path.join(test_kernel_dir, "kernel.bin")
         params_b["cpu_model"] = cpu_model
         params_b["cpu_model_flags"] = feature
+        del params_b["images"]
+        del params_b["nics"]
         env_process.preprocess_vm(self, params_b, env, vm_name)
         vm = env.get_vm(vm_name)
         vm.create()
