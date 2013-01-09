@@ -3334,7 +3334,8 @@ variants:
                 cpu_models += " Nehalem Westmere SandyBridge Haswell"
                 cpu_models += " Opteron_G1 Opteron_G2 Opteron_G3"
                 cpu_models += " Opteron_G4 Opteron_G5"
-                test_type = "test_qemu_cpu_model"
+                test_type = "test_qemu_cpu_models_list"
+
 
     - cpuflags: install setup image_copy unattended_install.cdrom
         virt_test_type = kvm

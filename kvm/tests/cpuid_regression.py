@@ -67,7 +67,7 @@ def run_cpuid_regression(test, params, env):
                                               exc_type, exc_value,
                                               exc_traceback.tb_next)))
 
-    class test_qemu_cpu_model(MiniSubtest):
+    class test_qemu_cpu_models_list(MiniSubtest):
         """
         check CPU models returned by <qemu> -cpu ? are what is expected
         """
