@@ -1,10 +1,10 @@
 """
 Group of regression tests for cpuid
 """
-import logging, re, sys, traceback
+import logging, re, sys, traceback, os
 from autotest.client.shared import error, utils
 from autotest.client.shared import test as test_module
-from virttest import utils_misc
+from virttest import utils_misc, env_process
 
 
 def run_cpuid_regression(test, params, env):
@@ -46,6 +46,7 @@ def run_cpuid_regression(test, params, env):
             if (hasattr(self, "vm")):
                 logging.info("cleanup")
                 vm = getattr(self, "vm")
+                vm.pause()
                 vm.destroy(gracefully=False)
 
         def test(self):
@@ -66,6 +67,34 @@ def run_cpuid_regression(test, params, env):
                       "".join(traceback.format_exception(
                                               exc_type, exc_value,
                                               exc_traceback.tb_next)))
+
+    def get_guest_cpuid(self, cpu_model, feature=None):
+        test_kernel_dir = os.path.join(test.virtdir, "deps", "cpuid_test_kernel")
+        os.chdir(test_kernel_dir)
+        utils.make("kernel.bin")
+
+        vm_name = params.get('main_vm')
+        params_b = params.copy()
+        params_b["kernel"] = os.path.join(test_kernel_dir, "kernel.bin")
+        params_b["cpu_model"] = cpu_model
+	params_b["cpu_model_flags"] = feature
+        env_process.preprocess_vm(self, params_b, env, vm_name)
+        vm = env.get_vm(vm_name)
+        vm.create()
+	self.vm = vm
+        vm.resume()
+
+        timeout = float(params.get("login_timeout", 240))
+        f = lambda: re.search("==END TEST==", vm.serial_console.get_output())
+        if not utils_misc.wait_for(f, timeout, 1):
+            raise error.TestFail("Could not get test complete message.")
+
+	test_sig = re.compile("==START TEST==\n(.*)\n==END TEST==")
+        test_output = test_sig.search(vm.serial_console.get_output())
+        if test_output == None:
+	    raise error.TestFail("Test output signature not found in "
+                                 "output:\n %s", vm.serial_console.get_output())
+	return test_output.group(1)
 
     class test_qemu_cpu_models_list(MiniSubtest):
         """
@@ -94,6 +123,14 @@ def run_cpuid_regression(test, params, env):
                 raise error.TestFail("Unexpected CPU models %s are in output "
                                      "'%s' of command \n%s" %
                                      (added, cmd, result.stdout))
+
+    class test_boot_cpu_model(MiniSubtest):
+        """
+        Builds and boots qemu with specified cpu model, for every patch in
+        specified range and checks tha
+        """
+        def test(self):
+            get_guest_cpuid(self, "qemu64")
 
 
     test_type = params.get("test_type")
