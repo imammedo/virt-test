@@ -151,7 +151,16 @@ def run_cpuid_regression(test, params, env):
         verify that CPU vendor matches requested
         """
         def test(self):
-            get_guest_cpuid(self, "qemu64")
+            for cpu_model in params.get("cpu_models").split(' '):
+                out = get_guest_cpuid(self, cpu_model)
+                guest_vendor = cpuid_to_vendor(out)
+                logging.debug("Guest's vendor: " + guest_vendor)
+                if guest_vendor != params.get("vendor"):
+                    raise error.TestFail("Guest vendor [%s], doen't match "
+                                         "required vendor [%s] for CPU [%s]" %
+                                         (guest_vendor, params.get("vendor"),
+                                          cpu_model))
+
 
 
     test_type = params.get("test_type")
