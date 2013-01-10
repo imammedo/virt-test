@@ -3329,7 +3329,6 @@ variants:
         variants:
             - rhel64.kvm.check_models:
                 cpu_models = "qemu64 phenom core2duo kvm64 qemu32"
-                # cpu_models += " kvm32 coreduo 486 pentium pentium2"
                 cpu_models += " coreduo 486 pentium pentium2"
                 cpu_models += " pentium3 athlon n270 Conroe Penryn"
                 cpu_models += " Nehalem Westmere SandyBridge Haswell"
