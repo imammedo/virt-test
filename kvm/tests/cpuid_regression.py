@@ -96,7 +96,9 @@ def run_cpuid_regression(test, params, env):
         if test_output == None:
 	    raise error.TestFail("Test output signature not found in "
                                  "output:\n %s", vm.serial_console.get_output())
-	return test_output.group(1)
+        self.clean()
+        return test_output.group(1)
+
 
     class test_qemu_cpu_models_list(MiniSubtest):
         """
