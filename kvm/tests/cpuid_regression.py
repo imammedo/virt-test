@@ -155,7 +155,17 @@ def run_cpuid_regression(test, params, env):
         verify that CPU vendor matches requested
         """
         def test(self):
-            for cpu_model in params.get("cpu_models").split(' '):
+            if params.get("cpu_models") is None:
+                cmd = qemu_binary + " -cpu ?"
+                result = utils.run(cmd)
+                cpu_models = set(extract_qemu_cpu_models(result.stdout))
+            else:
+                cpu_models = set(params.get("cpu_models").split(' '))
+
+            ignore_cpus = set(params.get("ignore_cpu_models","").split(' '))
+            cpu_models = cpu_models - ignore_cpus
+
+            for cpu_model in cpu_models:
                 out = get_guest_cpuid(self, cpu_model)
                 guest_vendor = cpuid_to_vendor(out)
                 logging.debug("Guest's vendor: " + guest_vendor)
