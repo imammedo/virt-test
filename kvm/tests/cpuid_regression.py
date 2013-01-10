@@ -99,6 +99,16 @@ def run_cpuid_regression(test, params, env):
         self.clean()
         return test_output.group(1)
 
+    def cpuid_regs_to_dic(level_count, cpuid_dump):
+        grp = '\w*=(\w*)\s*'
+        regs = re.search('\s+%s:.*%s%s%s%s' % (level_count, grp, grp, grp, grp),
+                         cpuid_dump)
+	if regs == None:
+            raise error.TestFail("Could not find %s in cpuid output",
+                                 level_count)
+        return {'eax': int(regs.group(1), 16), 'ebx': int(regs.group(2), 16),
+                'ecx': int(regs.group(3), 16), 'edx': int(regs.group(4), 16) }
+
 
     class test_qemu_cpu_models_list(MiniSubtest):
         """
