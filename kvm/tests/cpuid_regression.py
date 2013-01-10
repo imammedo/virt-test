@@ -128,10 +128,10 @@ def run_cpuid_regression(test, params, env):
                                      "'%s' of command \n%s" %
                                      (added, cmd, result.stdout))
 
-    class test_boot_cpu_model(MiniSubtest):
+    class default_vendor(MiniSubtest):
         """
-        Builds and boots qemu with specified cpu model, for every patch in
-        specified range and checks tha
+        Boot qemu with specified cpu models and
+        verify that CPU vendor matches requested
         """
         def test(self):
             get_guest_cpuid(self, "qemu64")
