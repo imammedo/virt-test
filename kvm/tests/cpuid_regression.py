@@ -161,6 +161,36 @@ def run_cpuid_regression(test, params, env):
                                          (guest_vendor, params.get("vendor"),
                                           cpu_model))
 
+    class custom_vendor(MiniSubtest):
+        """
+        Boot qemu with specified vendor
+        """
+        def test(self):
+            cpu_model = "qemu64"
+
+            xfail = False
+            if (params.get("xfail") is not None) and (params.get("xfail") == "yes"):
+                xfail = True
+
+            if params.get("cpu_model") is not None:
+                cpu_model = params.get("cpu_model")
+
+            if params.get("vendor") is None:
+                raise error.TestFail("'vendor' must be specified in config"
+                                     " for this test")
+            vendor = params.get("vendor")
+
+            try:
+                out = get_guest_cpuid(self, cpu_model, "vendor=" + vendor)
+                guest_vendor = cpuid_to_vendor(out)
+                logging.debug("Guest's vendor: " + guest_vendor)
+                if guest_vendor != params.get("vendor"):
+                    raise error.TestFail("Guest vendor [%s], doen't match "
+                                         "required vendor [%s] for CPU [%s]" %
+                                         (guest_vendor, vendor, cpu_model))
+            except:
+               if xfail is False:
+                   rise
 
 
     test_type = params.get("test_type")
