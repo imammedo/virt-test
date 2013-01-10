@@ -44,10 +44,10 @@ def run_cpuid_regression(test, params, env):
 
         def clean(self):
             if (hasattr(self, "vm")):
-                logging.info("cleanup")
                 vm = getattr(self, "vm")
-                vm.pause()
-                vm.destroy(gracefully=False)
+                if vm.is_alive():
+                    vm.pause()
+                    vm.destroy(gracefully=False)
 
         def test(self):
             """
