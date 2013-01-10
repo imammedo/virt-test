@@ -3355,6 +3355,7 @@ variants:
 
             - qemu13.nokvm.cpuid.default_vendor.intel:
                 disable_kvm = "yes"
+                enable_kvm = "no"
                 ignore_cpu_models = "486"
                 cpu_models = "core2duo kvm64 qemu32"
                 cpu_models += " coreduo pentium pentium2"
@@ -3365,6 +3366,7 @@ variants:
 
             - qemu13.nokvm.cpuid.default_vendor.amd:
                 disable_kvm = "yes"
+                enable_kvm = "no"
                 cpu_models = "qemu64 phenom athlon"
                 cpu_models += " Opteron_G1 Opteron_G2 Opteron_G3"
                 cpu_models += " Opteron_G4 Opteron_G5"
@@ -3388,6 +3390,7 @@ variants:
 
             - rhel64.nokvm.cpuid.default_vendor.intel:
                 disable_kvm = "yes"
+                enable_kvm = "no"
                 # 486 is exculded due to not supporting cpuid
                 cpu_models = "core2duo kvm64 qemu32"
                 cpu_models += " coreduo pentium pentium2"
@@ -3398,6 +3401,7 @@ variants:
 
             - rhel64.nokvm.cpuid.default_vendor.amd:
                 disable_kvm = "yes"
+                enable_kvm = "no"
                 # 486 is exculded due to not supporting cpuid
                 cpu_models = "qemu64 phenom athlon"
                 cpu_models += " Opteron_G1 Opteron_G2 Opteron_G3"
