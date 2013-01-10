@@ -3325,6 +3325,7 @@ variants:
         virt_test_type = kvm
         type = cpuid_regression
         start_vm = "no"
+        smp = 1
 
         variants:
             - rhel64.kvm.check_models:
