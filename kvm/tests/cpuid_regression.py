@@ -91,7 +91,7 @@ def run_cpuid_regression(test, params, env):
         if not utils_misc.wait_for(f, timeout, 1):
             raise error.TestFail("Could not get test complete message.")
 
-	test_sig = re.compile("==START TEST==\n(.*)\n==END TEST==")
+        test_sig = re.compile("==START TEST==\n((?:.*\n)*)\n*==END TEST==")
         test_output = test_sig.search(vm.serial_console.get_output())
         if test_output == None:
 	    raise error.TestFail("Test output signature not found in "
