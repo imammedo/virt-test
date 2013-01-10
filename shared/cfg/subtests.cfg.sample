@@ -3338,8 +3338,7 @@ variants:
                 cpu_models += " cpu64-rhel6 cpu64-rhel5"
                 test_type = "test_qemu_cpu_models_list"
 
-            - cpuid_test_kernel:
-                start_vm = "no"
+            - rhel64.kvm.cpuid.default_vendor:
                 test_type = "test_boot_cpu_model"
 
     - cpuflags: install setup image_copy unattended_install.cdrom
