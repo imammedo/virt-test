@@ -3324,7 +3324,7 @@ variants:
     - qemu_cpu:
         virt_test_type = kvm
         type = cpuid_regression
-        extra_params += " -snapshot"
+        start_vm = "no"
 
         variants:
             - check_models:
