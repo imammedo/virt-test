@@ -109,6 +109,13 @@ def run_cpuid_regression(test, params, env):
         return {'eax': int(regs.group(1), 16), 'ebx': int(regs.group(2), 16),
                 'ecx': int(regs.group(3), 16), 'edx': int(regs.group(4), 16) }
 
+    def cpuid_to_vendor(cpuid_dump):
+        r = cpuid_regs_to_dic('0x00000000 0x00', cpuid_dump)
+        dst =  []
+        map(lambda i: dst.append((chr(r['ebx'] >> (8 * i) & 0xff))), range(0,4))
+        map(lambda i: dst.append((chr(r['edx'] >> (8 * i) & 0xff))), range(0,4))
+        map(lambda i: dst.append((chr(r['ecx'] >> (8 * i) & 0xff))), range(0,4))
+        return ''.join(dst)
 
     class test_qemu_cpu_models_list(MiniSubtest):
         """
