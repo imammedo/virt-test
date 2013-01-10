@@ -3352,6 +3352,16 @@ variants:
                 vendor = "GenuineIntel"
                 test_type = "default_vendor"
 
+            - rhel64.nokvm.cpuid.default_vendor.intel:
+                disable_kvm = "yes"
+                # 486 is exculded due to not supporting cpuid
+                cpu_models = "core2duo kvm64 qemu32"
+                cpu_models += " coreduo pentium pentium2"
+                cpu_models += " pentium3 n270 Conroe Penryn"
+                cpu_models += " Nehalem Westmere SandyBridge Haswell"
+                vendor = "GenuineIntel"
+                test_type = "default_vendor"
+
 
     - cpuflags: install setup image_copy unattended_install.cdrom
         virt_test_type = kvm
