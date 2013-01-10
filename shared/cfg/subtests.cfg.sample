@@ -3372,6 +3372,19 @@ variants:
                 vendor = "AuthenticAMD"
                 test_type = "default_vendor"
 
+            - cpuid.custom_vendor:
+                vendor = "QWERasdfZXCV"
+                test_type = "custom_vendor"
+
+            - cpuid.custom_vendor.too_short:
+                xfail = "yes"
+                vendor = "Q"
+                test_type = "custom_vendor"
+
+            - cpuid.custom_vendor.empty:
+                xfail = "yes"
+                vendor = ""
+                test_type = "custom_vendor"
 
     - cpuflags: install setup image_copy unattended_install.cdrom
         virt_test_type = kvm

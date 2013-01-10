@@ -117,6 +117,10 @@ def run_cpuid_regression(test, params, env):
         map(lambda i: dst.append((chr(r['ecx'] >> (8 * i) & 0xff))), range(0,4))
         return ''.join(dst)
 
+    def cpuid_to_level(cpuid_dump):
+        r = cpuid_regs_to_dic('0x00000000 0x00', cpuid_dump)
+        return r['eax']
+
     class test_qemu_cpu_models_list(MiniSubtest):
         """
         check CPU models returned by <qemu> -cpu ? are what is expected
