@@ -109,8 +109,8 @@ def run_cpuid_regression(test, params, env):
         return {'eax': int(regs.group(1), 16), 'ebx': int(regs.group(2), 16),
                 'ecx': int(regs.group(3), 16), 'edx': int(regs.group(4), 16) }
 
-    def cpuid_to_vendor(cpuid_dump):
-        r = cpuid_regs_to_dic('0x00000000 0x00', cpuid_dump)
+    def cpuid_to_vendor(cpuid_dump, idx):
+        r = cpuid_regs_to_dic(idx + ' 0x00', cpuid_dump)
         dst =  []
         map(lambda i: dst.append((chr(r['ebx'] >> (8 * i) & 0xff))), range(0,4))
         map(lambda i: dst.append((chr(r['edx'] >> (8 * i) & 0xff))), range(0,4))
@@ -167,7 +167,7 @@ def run_cpuid_regression(test, params, env):
 
             for cpu_model in cpu_models:
                 out = get_guest_cpuid(self, cpu_model)
-                guest_vendor = cpuid_to_vendor(out)
+                guest_vendor = cpuid_to_vendor(out, '0x00000000')
                 logging.debug("Guest's vendor: " + guest_vendor)
                 if guest_vendor != params.get("vendor"):
                     raise error.TestFail("Guest vendor [%s], doen't match "
@@ -196,12 +196,18 @@ def run_cpuid_regression(test, params, env):
 
             try:
                 out = get_guest_cpuid(self, cpu_model, "vendor=" + vendor)
-                guest_vendor = cpuid_to_vendor(out)
-                logging.debug("Guest's vendor: " + guest_vendor)
-                if guest_vendor != params.get("vendor"):
-                    raise error.TestFail("Guest vendor [%s], doen't match "
+                guest_vendor0 = cpuid_to_vendor(out, '0x00000000')
+                guest_vendor80000000 = cpuid_to_vendor(out, '0x80000000')
+                logging.debug("Guest's vendor[0]: " + guest_vendor0)
+                logging.debug("Guest's vendor[0x80000000]: " + guest_vendor80000000)
+                if guest_vendor0 != params.get("vendor"):
+                    raise error.TestFail("Guest vendor[0] [%s], doesn't match "
                                          "required vendor [%s] for CPU [%s]" %
-                                         (guest_vendor, vendor, cpu_model))
+                                         (guest_vendor0, vendor, cpu_model))
+                if guest_vendor80000000 != params.get("vendor"):
+                    raise error.TestFail("Guest vendor[0x80000000] [%s], doesn't match "
+                                         "required vendor [%s] for CPU [%s]" %
+                                         (guest_vendor80000000, vendor, cpu_model))
             except:
                if xfail is False:
                    rise
