@@ -3475,6 +3475,24 @@ variants:
                 model =  foo
                 test_type = "custom_model"
 
+            - cpuid.custom_stepping:
+                stepping = 5
+                test_type = "custom_stepping"
+
+            - cpuid.custom_stepping.max:
+                stepping = 15
+                test_type = "custom_stepping"
+
+            - cpuid.custom_stepping.out_of_range:
+                xfail = "yes"
+                stepping = 16
+                test_type = "custom_stepping"
+
+            - cpuid.custom_stepping.Nan:
+                xfail = "yes"
+                stepping = foo
+                test_type = "custom_stepping"
+
     - cpuflags: install setup image_copy unattended_install.cdrom
         virt_test_type = kvm
         no JeOS
