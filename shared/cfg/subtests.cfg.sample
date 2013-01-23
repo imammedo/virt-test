@@ -3425,6 +3425,15 @@ variants:
                 vendor = ""
                 test_type = "custom_vendor"
 
+            - cpuid.custom_level:
+                level = 5
+                test_type = "custom_level"
+
+            - cpuid.custom_level.not_number:
+                xfail = "yes"
+                level = "five"
+                test_type = "custom_level"
+
     - cpuflags: install setup image_copy unattended_install.cdrom
         virt_test_type = kvm
         no JeOS
