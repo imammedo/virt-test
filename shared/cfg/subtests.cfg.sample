@@ -3434,6 +3434,29 @@ variants:
                 level = "five"
                 test_type = "custom_level"
 
+            - cpuid.custom_family:
+                family = 6
+                test_type = "custom_family"
+
+            - cpuid.custom_family.ext:
+                family = 21
+                test_type = "custom_family"
+
+            - cpuid.custom_family.max:
+                # 0xff + 0xf = 270
+                family = 270
+                test_type = "custom_family"
+
+            - cpuid.custom_family.NaN:
+                xfail = "yes"
+                family =  foo
+                test_type = "custom_family"
+
+            - cpuid.custom_family.out_of_range:
+                xfail = "yes"
+                family = 271
+                test_type = "custom_family"
+
     - cpuflags: install setup image_copy unattended_install.cdrom
         virt_test_type = kvm
         no JeOS
