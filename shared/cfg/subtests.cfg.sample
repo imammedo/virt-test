@@ -3515,6 +3515,10 @@ variants:
                 xlevel = foo
                 test_type = "custom_xlevel"
 
+            - cpuid.custom_model_id:
+                model_id = "QEMU CPU Brand by virt-test"
+                test_type = "custom_model_id"
+
     - cpuflags: install setup image_copy unattended_install.cdrom
         virt_test_type = kvm
         no JeOS
