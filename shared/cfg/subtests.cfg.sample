@@ -3493,6 +3493,28 @@ variants:
                 stepping = foo
                 test_type = "custom_stepping"
 
+            - cpuid.custom_xlevel.fixup:
+                # fix me when fixup in QEMU is removed
+                xlevel = 5
+                # expect fixup to 0x80000005
+                expect_xlevel = 2147483653
+                test_type = "custom_xlevel"
+
+            - cpuid.custom_xlevel:
+                # xlevel = 0x80000001
+                xlevel = 2147483649
+                test_type = "custom_xlevel"
+
+            - cpuid.custom_xlevel.supported_max:
+                # xlevel = 0x8000000A
+                xlevel = 2147483658
+                test_type = "custom_xlevel"
+
+            - cpuid.custom_xlevel.Nan:
+                xfail = "yes"
+                xlevel = foo
+                test_type = "custom_xlevel"
+
     - cpuflags: install setup image_copy unattended_install.cdrom
         virt_test_type = kvm
         no JeOS
